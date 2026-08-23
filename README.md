@@ -5,7 +5,7 @@
 
 notebook.nvim is a Neovim plugin designed to make the interactions with Jupyter Notebook comfortable and fast.
 
-`a GIF here`
+<img width="1080" height="653" alt="Image" src="https://github.com/user-attachments/assets/efde1d55-06ef-4adc-a508-768c407a9239" />
 
 ### Description
 
