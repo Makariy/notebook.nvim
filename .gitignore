@@ -1,0 +1,18 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+*.ipynb
+
+*.ipynb.py
+pyproject.toml
+.python-version
+uv.lock
+kernel-test.json
+data/
