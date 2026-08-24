@@ -48,10 +48,14 @@ local function install_guard()
 					end)
 					if not is_managed_by_any(win) then
 						if ok and has_scrollbind then
-							pcall(function() vim.wo[win].scrollbind = false end)
+							pcall(function()
+								vim.wo[win].scrollbind = false
+							end)
 						end
 						if ok2 and has_cursorbind then
-							pcall(function() vim.wo[win].cursorbind = false end)
+							pcall(function()
+								vim.wo[win].cursorbind = false
+							end)
 						end
 					end
 				end

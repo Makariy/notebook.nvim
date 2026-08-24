@@ -19,7 +19,7 @@ local FocusMode = require("notebook.ui.focus_mode")
 local OutputVisibility = require("notebook.ui.output_visibility")
 local config = require("notebook.config")
 
----@class INotebookView 
+---@class INotebookView
 ---@field notebook Notebook
 ---@field path string
 ---@field execution_state ExecutionState
@@ -112,10 +112,10 @@ function NotebookView:_setup_lifecycle()
 	self._lifecycle_group = vim.api.nvim_create_augroup("NotebookLifecycle_" .. self.code_buf, { clear = true })
 
 	local function check_layout(ev)
-		
-
 		vim.schedule(function()
-			if self.focus_mode:active() then return end
+			if self.focus_mode:active() then
+				return
+			end
 			if not vim.api.nvim_buf_is_valid(self.code_buf) or not vim.api.nvim_buf_is_valid(self.results_buf) then
 				return
 			end
@@ -147,7 +147,8 @@ function NotebookView:_setup_lifecycle()
 					vim.api.nvim_win_call(code_w, function()
 						self.code_win = code_w
 						WindowSetup.configure_code_window(self.code_win)
-						self.results_win = WindowLayout.split("rightbelow", self.results_buf, WindowSetup.configure_results_window)
+						self.results_win =
+							WindowLayout.split("rightbelow", self.results_buf, WindowSetup.configure_results_window)
 					end)
 					self:_rebind_windows()
 					self.scroll_sync:sync_from(self.code_win)
@@ -155,7 +156,8 @@ function NotebookView:_setup_lifecycle()
 					vim.api.nvim_win_call(res_w, function()
 						self.results_win = res_w
 						WindowSetup.configure_results_window(self.results_win)
-						self.code_win = WindowLayout.split("leftabove", self.code_buf, WindowSetup.configure_code_window)
+						self.code_win =
+							WindowLayout.split("leftabove", self.code_buf, WindowSetup.configure_code_window)
 					end)
 					self:_rebind_windows()
 					self.scroll_sync:sync_from(self.code_win)
@@ -211,7 +213,11 @@ function NotebookView:open()
 		buffer = self.code_buf,
 		callback = function()
 			if vim.bo[self.code_buf].modified then
-				local choice = vim.fn.confirm("Notebook changes will be lost if you don't save, would you like to save it?", "&Yes\n&No\n&Cancel", 1)
+				local choice = vim.fn.confirm(
+					"Notebook changes will be lost if you don't save, would you like to save it?",
+					"&Yes\n&No\n&Cancel",
+					1
+				)
 				if choice == 1 then
 					self.controller:save()
 					vim.bo[self.code_buf].modified = false
@@ -221,12 +227,9 @@ function NotebookView:open()
 			end
 		end,
 	})
-
-
 end
 
 function NotebookView:close()
-
 	if self._lifecycle_group then
 		pcall(vim.api.nvim_del_augroup_by_id, self._lifecycle_group)
 	end
@@ -330,7 +333,9 @@ function NotebookView:_schedule_syncbind()
 		return
 	end
 	vim.schedule(function()
-			if self.focus_mode:active() then return end
+		if self.focus_mode:active() then
+			return
+		end
 		if vim.api.nvim_win_is_valid(self.code_win) and vim.api.nvim_win_is_valid(self.results_win) then
 			vim.api.nvim_win_call(self.code_win, function()
 				vim.cmd("syncbind")

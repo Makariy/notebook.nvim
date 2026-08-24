@@ -64,9 +64,9 @@ function FocusMode:exit()
 	if self.mode == "output" then
 		local results_win = view.results_win
 		vim.api.nvim_win_call(results_win, function()
-		view.code_win = WindowLayout.split("leftabove", view.code_buf, WindowSetup.configure_code_window)
+			view.code_win = WindowLayout.split("leftabove", view.code_buf, WindowSetup.configure_code_window)
 		end)
-		
+
 		vim.wo[results_win].wrap = false
 		view:_rebind_windows()
 		vim.api.nvim_set_current_win(results_win)
@@ -74,9 +74,9 @@ function FocusMode:exit()
 	else
 		local code_win = view.code_win
 		vim.api.nvim_win_call(code_win, function()
-		view.results_win = WindowLayout.split("rightbelow", view.results_buf, WindowSetup.configure_results_window)
+			view.results_win = WindowLayout.split("rightbelow", view.results_buf, WindowSetup.configure_results_window)
 		end)
-		
+
 		vim.wo[code_win].wrap = false
 		view:_rebind_windows()
 		vim.api.nvim_set_current_win(code_win)

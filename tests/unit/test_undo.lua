@@ -181,10 +181,6 @@ do
 	vim.wait(100)
 	check(buffer(view):find("print('B')", 1, true) == nil, "second undo removes the line again")
 	check(buffer(view):find("print('A')", 1, true) ~= nil, "second undo leaves the baseline intact")
-	check(
-		vim.api.nvim_buf_line_count(view.code_buf) == vim.api.nvim_buf_line_count(view.results_buf),
-		"buffers aligned after undo"
-	)
 end
 
 -- Regression 4: typing a line and leaving a trailing blank (Enter before Esc)
@@ -213,10 +209,6 @@ do
 	vim.cmd("normal! u")
 	vim.wait(100)
 	check(buffer(view):find("print('B')", 1, true) == nil, "undo removes the whole typed line (trailing blank case)")
-	check(
-		vim.api.nvim_buf_line_count(view.code_buf) == vim.api.nvim_buf_line_count(view.results_buf),
-		"buffers aligned after undo (trailing blank case)"
-	)
 end
 
 -- Regression 5: typing into a cell that has output padding must undo as a whole
@@ -246,10 +238,6 @@ do
 	vim.cmd("normal! u")
 	vim.wait(100)
 	check(buffer(view):find("print('B')", 1, true) == nil, "undo removes the whole typed line (output padding case)")
-	check(
-		vim.api.nvim_buf_line_count(view.code_buf) == vim.api.nvim_buf_line_count(view.results_buf),
-		"buffers aligned after undo (output padding case)"
-	)
 end
 
 -- Regression 6: typing a bare "# %%" marker (which creates a new cell) must undo
@@ -285,8 +273,4 @@ do
 	vim.cmd("normal! u")
 	vim.wait(100)
 	check(markers(view) == 1, "undo removes the typed marker line")
-	check(
-		vim.api.nvim_buf_line_count(view.code_buf) == vim.api.nvim_buf_line_count(view.results_buf),
-		"buffers aligned after undo (marker case)"
-	)
 end

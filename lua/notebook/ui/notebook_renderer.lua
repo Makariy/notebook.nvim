@@ -142,7 +142,15 @@ end
 ---@param hidden_outputs? table<string, boolean> Cell ids whose outputs are hidden
 ---@param undo_locked_heights? table<string, integer> Optional map of actual physical line counts from a locked code buffer
 ---@return NotebookLayout
-function NotebookRenderer.build(notebook, code_width, res_width, resolved, execution_state, hidden_outputs, undo_locked_heights)
+function NotebookRenderer.build(
+	notebook,
+	code_width,
+	res_width,
+	resolved,
+	execution_state,
+	hidden_outputs,
+	undo_locked_heights
+)
 	code_width = code_width or 80
 	res_width = res_width or 80
 	execution_state = execution_state or NO_STATE

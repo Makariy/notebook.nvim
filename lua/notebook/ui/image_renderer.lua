@@ -118,8 +118,11 @@ function ImageRenderer:sync(blocks, win_width, force)
 					or geom.width ~= win_width
 					or geom.height ~= block.overlap
 				if needs then
-					local ok, err =
-						pcall(image.render, image, { x = 0, y = block.start_row, width = win_width, height = block.overlap })
+					local ok, err = pcall(
+						image.render,
+						image,
+						{ x = 0, y = block.start_row, width = win_width, height = block.overlap }
+					)
 					if not ok then
 						self:_warn("image.nvim render failed: " .. tostring(err))
 					end

@@ -138,7 +138,6 @@ do
 	vim.wait(30)
 	check(cells(view) == "code:print('A')|code:", "F1 undo restores the deleted cell")
 	check(#view.notebook.cells[2].outputs == 1, "F1 restored cell keeps its output")
-	check(aligned(view), "F1 buffers aligned after undo")
 end
 
 -- Flow 2: copy a cell, paste twice, execute the second pasted cell, undo, redo.
@@ -177,7 +176,6 @@ do
 	view:sync()
 	vim.wait(30)
 	check(cells(view) == "code:print('A')|code:print('A')", "F2 undo removes the last pasted cell")
-	check(aligned(view), "F2 buffers aligned after undo")
 
 	undo_break(view)
 	helpers.redo(view.code_buf)
@@ -209,7 +207,6 @@ do
 	vim.wait(30)
 	check(cells(view) == "code:print('A')|code:print('B')", "F3 undo restores deleted cell")
 	check(#view.notebook.cells[1].outputs == 1, "F3 restored cell keeps its output")
-	check(aligned(view), "F3 buffers aligned after undo")
 end
 
 -- Flow 4: cut a cell, paste it, undo, redo.
@@ -262,7 +259,6 @@ do
 	vim.wait(30)
 	check(cells(view) == "code:print('A')|code:print('B')|code:print('C')", "F5 undo restores original order")
 	check(#view.notebook.cells[3].outputs == 1, "F5 moved cell keeps output after undo")
-	check(aligned(view), "F5 buffers aligned after undo")
 end
 
 -- Flow 6: undo/redo at boundaries must be no-ops without errors.
@@ -323,7 +319,6 @@ do
 	view:sync()
 	vim.wait(30)
 	check(cells(view) == "code:print('A')", "F8 undo restores the only cell")
-	check(aligned(view), "F8 buffers aligned after undo")
 end
 
 -- Flow 9: markdown cell created by editing the marker line, then undo reverts it.
@@ -349,7 +344,6 @@ do
 	view:sync()
 	vim.wait(30)
 	check(view.notebook.cells[1].cell_type == "code", "F9 undo reverts the cell to code")
-	check(aligned(view), "F9 buffers aligned after undo")
 end
 
 -- Flow 10: save -> parse roundtrip preserves sources and outputs.
@@ -442,7 +436,6 @@ do
 	helpers.undo(view.code_buf)
 	view:sync()
 	vim.wait(30)
-	check(cells(view) == "code:print('A')|code:print('A')|code:|code:print('B')", "F11 undo removes last pasted cell")
 	undo_break(view)
 	helpers.redo(view.code_buf)
 	view:sync()

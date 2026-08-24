@@ -234,7 +234,6 @@ function NotebookController:kernel_shutdown()
 	self.kernel:shutdown()
 end
 
-
 function NotebookController:split_cell()
 	local view = self.view
 	view:sync()
@@ -255,7 +254,7 @@ function NotebookController:split_cell()
 
 	local source_lines = codec.split_source(cell.source)
 	local relative_row = row - cell_start
-	
+
 	if relative_row > #source_lines then
 		relative_row = #source_lines + 1
 	end

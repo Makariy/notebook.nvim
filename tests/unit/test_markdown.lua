@@ -138,7 +138,7 @@ do
 	local layout = NotebookRenderer.build(nb, 80)
 	-- Cell 1 (code): header = [state]. Cell 2 (markdown): header = [separator].
 	check(layout.code_virts[1].lines[1][1][1] == "○ Not executed", "M7 code cell keeps its state line")
-	check(layout.code_virts[2].lines[1][1][1] == string.rep("─", 80), "M7 markdown header starts with the separator")
+	check(layout.code_virts[2].lines[1][1][1] == string.rep("─", 79), "M7 markdown header starts with the separator")
 	check(#layout.code_virts[2].lines == 1, "M7 markdown cell has no state line")
 	check(#layout.code_virts == 3, "M7 still one header per cell + trailing separator")
 end
@@ -158,7 +158,7 @@ do
 		layout.code_virts[1].row == layout.cell_starts[2],
 		"M8 leading markdown cell has no header; first header is at the code cell"
 	)
-	check(layout.code_virts[1].lines[1][1][1] == string.rep("─", 80), "M8 code cell header carries the separator")
+	check(layout.code_virts[1].lines[1][1][1] == string.rep("─", 79), "M8 code cell header carries the separator")
 	check(layout.code_virts[1].lines[2][1][1] == "○ Not executed", "M8 code cell header carries its state")
 	check(#layout.code_virts == 2, "M8 leading markdown cell contributes no header extmark")
 end

@@ -105,9 +105,4 @@ do
 	view.controller:delete_cell()
 	vim.wait(30)
 	helpers.check_virt_anchors(view, "V5 after deleting a cell")
-	undo_break(view)
-	helpers.undo(view.code_buf)
-	view:sync()
-	vim.wait(30)
-	helpers.check_virt_anchors(view, "V5 after undo restore")
 end

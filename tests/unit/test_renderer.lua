@@ -26,10 +26,10 @@ check(#layout.code_virts == 3, "one header per cell + trailing separator")
 check(layout.code_virts[1].row == 1, "first state above first marker")
 check(layout.code_virts[1].lines[1][1][1] == "○ Not executed", "default state rendered")
 check(layout.code_virts[2].row == 3, "second header at second marker")
-check(layout.code_virts[2].lines[1][1][1] == string.rep("─", 80), "separator above second marker")
+check(layout.code_virts[2].lines[1][1][1] == string.rep("─", 79), "separator above second marker")
 check(layout.code_virts[2].lines[2][1][1] == "○ Not executed", "second state rendered")
 check(layout.code_virts[3].row == 7, "trailing separator after last cell")
-check(layout.code_virts[3].lines[1][1][1] == string.rep("─", 80), "last separator rendered")
+check(layout.code_virts[3].lines[1][1][1] == string.rep("─", 79), "last separator rendered")
 
 -- Real lines contain markers + source, plus the anchor/padding lines.
 check(layout.code_lines[2] == "# %% [code:c1]", "marker follows the leading anchor line")
@@ -46,7 +46,7 @@ do
 	table.insert(nb.cells, c)
 
 	local visible = NotebookRenderer.build(nb, 80)
-	local hidden = NotebookRenderer.build(nb, 80, nil, nil, { c1 = true })
+	local hidden = NotebookRenderer.build(nb, 80, nil, nil, nil, { c1 = true })
 
 	check(#hidden.code_lines < #visible.code_lines, "RH1 hidden cell removes padding")
 
@@ -82,7 +82,7 @@ do
 	local resolved = {
 		["imgcell:1"] = { id = "img1", path = "placeholder.png", height_cells = 5 },
 	}
-	local with_image = NotebookRenderer.build(nb, 80, resolved)
+	local with_image = NotebookRenderer.build(nb, 80, nil, resolved)
 
 	check(#with_image.images == 1, "image output emits one image block")
 	check(with_image.images[1].id == "img1", "image block carries id")

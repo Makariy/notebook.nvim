@@ -102,8 +102,6 @@ function ViewBindings:setup()
 			end,
 		})
 	)
-
-
 end
 
 function ViewBindings:teardown()

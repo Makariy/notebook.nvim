@@ -24,7 +24,6 @@ end
 function M.setup(view)
 	view.code_buf = vim.api.nvim_get_current_buf()
 
-
 	vim.bo[view.code_buf].buftype = ""
 	vim.bo[view.code_buf].filetype = "python"
 	vim.bo[view.code_buf].bufhidden = "hide"
