@@ -25,7 +25,8 @@ function RenderPipeline:render(view)
 
 	local resolved
 	if ports.results_win and vim.api.nvim_win_is_valid(ports.results_win) and view.image_renderer:available() then
-		resolved = view.image_renderer:resolve(view.notebook, res_width)
+		local img_width = math.max(1, res_width - 2)
+		resolved = view.image_renderer:resolve(view.notebook, img_width)
 	end
 
 	local ut = vim.fn.undotree()

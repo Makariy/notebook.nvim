@@ -22,7 +22,18 @@ local function split_lines(text)
 	if text:sub(-1) == "\n" then
 		text = text:sub(1, -2)
 	end
-	return vim.split(text, "\n", { plain = true, trimempty = false })
+	local raw_lines = vim.split(text, "\n", { plain = true, trimempty = false })
+	local result = {}
+	for _, line in ipairs(raw_lines) do
+		if line:sub(-1) == "\r" then
+			line = line:sub(1, -2)
+		end
+		if line:find("\r", 1, true) then
+			line = line:match("\r([^\r]*)$") or line
+		end
+		table.insert(result, line)
+	end
+	return result
 end
 
 ---@private

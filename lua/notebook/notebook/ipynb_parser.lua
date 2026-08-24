@@ -66,14 +66,18 @@ local function parse_cell(raw)
 		for _, out in ipairs(raw.outputs) do
 			local parsed = parse_output(out)
 			if parsed then
-				if parsed.output_type == "stream" and #outputs > 0 then
-					local last = outputs[#outputs]
-					if last.output_type == "stream" and last.name == parsed.name then
-						last.text = last.text .. parsed.text
-						parsed = nil
+				local merged = false
+				if parsed.output_type == "stream" then
+					for i = #outputs, 1, -1 do
+						local last = outputs[i]
+						if last.output_type == "stream" and last.name == parsed.name then
+							last.text = last.text .. parsed.text
+							merged = true
+							break
+						end
 					end
 				end
-				if parsed then
+				if not merged then
 					table.insert(outputs, parsed)
 				end
 			end

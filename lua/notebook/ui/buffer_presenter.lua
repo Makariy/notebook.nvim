@@ -91,7 +91,8 @@ function M.apply(ports, layout, win_width, res_width, image_renderer, scroll_syn
 	end
 
 	if ports.results_win and vim.api.nvim_win_is_valid(ports.results_win) then
-		image_renderer:sync(layout.images, res_width, res_changed)
+		local img_width = math.max(1, res_width - 2)
+		image_renderer:sync(layout.images, img_width, res_changed)
 	end
 
 	if anchor then

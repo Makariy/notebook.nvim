@@ -45,11 +45,13 @@ end
 
 ---@param output CellOutput
 function Cell:add_output(output)
-	if output.output_type == "stream" and #self.outputs > 0 then
-		local last = self.outputs[#self.outputs]
-		if last.output_type == "stream" and last.name == output.name then
-			last.text = last.text .. output.text
-			return
+	if output.output_type == "stream" then
+		for i = #self.outputs, 1, -1 do
+			local last = self.outputs[i]
+			if last.output_type == "stream" and last.name == output.name then
+				last.text = last.text .. output.text
+				return
+			end
 		end
 	end
 	table.insert(self.outputs, output)
