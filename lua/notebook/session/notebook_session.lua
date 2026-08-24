@@ -85,6 +85,12 @@ function NotebookSession:execute_cell(index)
 	-- stale progress/done callbacks are ignored so outputs are not duplicated.
 	local msg_id
 	msg_id = self.command_executer:execute(cell.source, {
+		on_start = function()
+			if not self.in_flight:is_current(cell_id, msg_id) then
+				return
+			end
+			self.listeners:emit("on_start", cell_id)
+		end,
 		on_progress = function(payload)
 			if not self.in_flight:is_current(cell_id, msg_id) then
 				return

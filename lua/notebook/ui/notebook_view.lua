@@ -87,6 +87,10 @@ function NotebookView.new(notebook, path)
 	self.pipeline = RenderPipeline.new()
 
 	self.session:subscribe({
+		on_start = function(cell_id)
+			self.execution_state:start_execution(cell_id)
+			self.scheduler:schedule()
+		end,
 		on_progress = function()
 			self.scheduler:schedule()
 		end,

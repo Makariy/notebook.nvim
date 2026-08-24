@@ -61,12 +61,12 @@ local NO_STATE = {
 ---@param pending_sep table[]? The previous cell's separator, if any
 ---@return table[] code_header
 ---@return table[] res_header
-local function cell_header(cell, execution_state, pending_sep)
+local function cell_header(cell, execution_state, code_sep, res_sep)
 	local code_header = {}
 	local res_header = {}
-	if pending_sep then
-		table.insert(code_header, pending_sep)
-		table.insert(res_header, pending_sep)
+	if code_sep then
+		table.insert(code_header, code_sep)
+		table.insert(res_header, res_sep)
 	end
 	if cell.cell_type == "code" then
 		table.insert(code_header, { { format_label(execution_state:get(cell.metadata.id)), STATE_HL } })
@@ -135,14 +135,16 @@ local function cell_body(cell, marker_row, resolved, highlights, hidden_outputs)
 end
 
 ---@param notebook Notebook
----@param win_width? integer
+---@param code_width? integer
+---@param res_width? integer
 ---@param resolved? table<string, { id: string, path: string, height_cells: integer }>
 ---@param execution_state? ExecutionState
 ---@param hidden_outputs? table<string, boolean> Cell ids whose outputs are hidden
 ---@param undo_locked_heights? table<string, integer> Optional map of actual physical line counts from a locked code buffer
 ---@return NotebookLayout
-function NotebookRenderer.build(notebook, win_width, resolved, execution_state, hidden_outputs, undo_locked_heights)
-	win_width = win_width or 80
+function NotebookRenderer.build(notebook, code_width, res_width, resolved, execution_state, hidden_outputs, undo_locked_heights)
+	code_width = code_width or 80
+	res_width = res_width or 80
 	execution_state = execution_state or NO_STATE
 
 	local code_lines = { "" }
@@ -155,15 +157,18 @@ function NotebookRenderer.build(notebook, win_width, resolved, execution_state, 
 	local cell_ends = {}
 	local images = {}
 
-	local sep = string.rep("─", win_width)
+	local code_sep = string.rep("─", math.max(1, code_width - 1))
+	local res_sep = string.rep("─", math.max(1, res_width - 1))
 
-	local pending_sep
+	local pending_code_sep
+	local pending_res_sep
 
 	for _, cell in ipairs(notebook.cells) do
 		local marker_row = #code_lines
 
-		local code_header, res_header = cell_header(cell, execution_state, pending_sep)
-		pending_sep = nil
+		local code_header, res_header = cell_header(cell, execution_state, pending_code_sep, pending_res_sep)
+		pending_code_sep = nil
+		pending_res_sep = nil
 		if #code_header > 0 then
 			table.insert(code_virts, { row = marker_row, lines = code_header })
 			table.insert(res_virts, { row = marker_row, lines = res_header })
@@ -211,15 +216,16 @@ function NotebookRenderer.build(notebook, win_width, resolved, execution_state, 
 			})
 		end
 
-		pending_sep = { { sep, SEP_HL } }
+		pending_code_sep = { { code_sep, SEP_HL } }
+		pending_res_sep = { { res_sep, SEP_HL } }
 	end
 
 	table.insert(code_lines, "")
 	table.insert(res_lines, "")
-	if pending_sep then
+	if pending_code_sep then
 		local trailing_row = #code_lines - 1
-		table.insert(code_virts, { row = trailing_row, lines = { pending_sep } })
-		table.insert(res_virts, { row = trailing_row, lines = { pending_sep } })
+		table.insert(code_virts, { row = trailing_row, lines = { pending_code_sep } })
+		table.insert(res_virts, { row = trailing_row, lines = { pending_res_sep } })
 	end
 
 	return {

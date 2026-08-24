@@ -13,6 +13,7 @@
 ---@field wait? boolean
 
 ---@class ExecutionProgressDispatcher
+---@field on_start? fun()
 ---@field on_progress? fun(output: ExecutionProgressPayload)
 ---@field on_done? fun(status: "ok" | "error" | "abort", execution_count: integer?)
 
@@ -147,6 +148,10 @@ function CommandExecuter:handle_message(raw_json)
 		pending_exec.is_idle = true
 		if pending_exec.final_status then
 			self:_finish(parent_id, pending_exec, pending_exec.final_status, pending_exec.execution_count)
+		end
+	elseif msg_type == "execute_input" then
+		if dispatcher.on_start then
+			dispatcher.on_start()
 		end
 	elseif dispatcher.on_progress then
 		local builder = PROGRESS_BUILDERS[msg_type]

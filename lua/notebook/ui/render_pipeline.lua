@@ -40,6 +40,7 @@ function RenderPipeline:render(view)
 	local layout = NotebookRenderer.build(
 		view.notebook,
 		code_width,
+		res_width,
 		resolved,
 		view.execution_state,
 		view.output_visibility:state(),

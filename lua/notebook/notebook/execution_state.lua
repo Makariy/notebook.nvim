@@ -19,6 +19,14 @@ function ExecutionState:set_busy(cell_id)
 end
 
 ---@param cell_id string
+function ExecutionState:start_execution(cell_id)
+	local entry = self.entries[cell_id]
+	if entry and entry.state == "busy" then
+		entry.start_time = vim.uv.hrtime()
+	end
+end
+
+---@param cell_id string
 ---@param ok boolean
 function ExecutionState:set_done(cell_id, ok)
 	local entry = self.entries[cell_id]
